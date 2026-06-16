@@ -1,13 +1,13 @@
 - id: ash-pre-commit
   name: ASH Pre Commit Scan
-  entry: powershell.exe -NoProfile -Command "ash --mode local"
+  entry: ash --mode local --output-dir .ash_temp
   language: system
   pass_filenames: false
   stages: [pre-commit]
 
 - id: ash-pre-push
   name: ASH Pre Push Scan
-  entry: powershell.exe -NoProfile -Command "ash --mode local"
+  entry: ash --mode local --output-dir .ash_temp
   language: system
   pass_filenames: false
   stages: [pre-push]

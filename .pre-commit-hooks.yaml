@@ -1,11 +1,11 @@
 - id: ash-pre-commit
   name: ASH Pre Commit Scan
-  entry: hooks/ash-pre-commit.sh
-  language: script
+  entry: powershell -ExecutionPolicy Bypass -File hooks/ash-pre-commit.ps1
+  language: system
   stages: [pre-commit]
 
 - id: ash-pre-push
   name: ASH Pre Push Scan
-  entry: hooks/ash-pre-push.sh
-  language: script
+  entry: powershell -ExecutionPolicy Bypass -File hooks/ash-pre-push.ps1
+  language: system
   stages: [pre-push]

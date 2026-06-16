@@ -1,9 +1,11 @@
 - id: ash-pre-commit
   name: ASH Pre Commit Scan
   entry: powershell.exe -NoProfile -Command "
-    $env:ASH_OUTPUT_DIR = \"$env:TEMP\ash_output\";
-    if (Test-Path .ash) { Remove-Item -Recurse -Force .ash };
-    ash --mode local
+  $ErrorActionPreference='Stop';
+
+  $env:ASH_OUTPUT_DIR = \"$env:TEMP\\ash_output\";
+
+  ash --mode local --no-output-dir
   "
   language: system
   pass_filenames: false
@@ -12,9 +14,11 @@
 - id: ash-pre-push
   name: ASH Pre Push Scan
   entry: powershell.exe -NoProfile -Command "
-    $env:ASH_OUTPUT_DIR = \"$env:TEMP\ash_output\";
-    if (Test-Path .ash) { Remove-Item -Recurse -Force .ash };
-    ash --mode local
+  $ErrorActionPreference='Stop';
+
+  $env:ASH_OUTPUT_DIR = \"$env:TEMP\\ash_output\";
+
+  ash --mode local --no-output-dir
   "
   language: system
   pass_filenames: false

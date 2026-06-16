@@ -1,11 +1,11 @@
 - id: ash-pre-commit
   name: ASH Pre Commit Scan
-  entry: powershell.exe -NoProfile -Command "ash --mode local; if ($LASTEXITCODE -ne 0) { exit 1 }"
+  entry: powershell.exe -NoProfile -Command "Remove-Item -Recurse -Force .ash -ErrorAction SilentlyContinue; mkdir -Force .ash\\ash_output | Out-Null; ash --mode local"
   language: system
   stages: [pre-commit]
 
 - id: ash-pre-push
   name: ASH Pre Push Scan
-  entry: powershell.exe -NoProfile -Command "ash --mode local; if ($LASTEXITCODE -ne 0) { exit 1 }"
+  entry: powershell.exe -NoProfile -Command "Remove-Item -Recurse -Force .ash -ErrorAction SilentlyContinue; mkdir -Force .ash\\ash_output | Out-Null; ash --mode local"
   language: system
   stages: [pre-push]

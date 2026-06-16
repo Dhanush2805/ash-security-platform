@@ -1,11 +1,11 @@
 - id: ash-pre-commit
   name: ASH Pre Commit Scan
-  entry: powershell.exe -NoProfile -File scripts/run-ash.ps1
+  entry: powershell.exe -NoProfile -Command "Set-Location (git rev-parse --show-toplevel); .\scripts\run-ash.ps1"
   language: system
   stages: [pre-commit]
 
 - id: ash-pre-push
   name: ASH Pre Push Scan
-  entry: powershell.exe -NoProfile -File scripts/run-ash.ps1
+  entry: powershell.exe -NoProfile -Command "Set-Location (git rev-parse --show-toplevel); .\scripts\run-ash.ps1"
   language: system
   stages: [pre-push]

@@ -1,0 +1,11 @@
+- id: ash-pre-commit
+  name: ASH Pre Commit Scan
+  entry: hooks/ash-pre-commit.sh
+  language: script
+  stages: [pre-commit]
+
+- id: ash-pre-push
+  name: ASH Pre Push Scan
+  entry: hooks/ash-pre-push.sh
+  language: script
+  stages: [pre-push]

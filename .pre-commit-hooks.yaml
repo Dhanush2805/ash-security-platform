@@ -1,11 +1,11 @@
 - id: ash-pre-commit
   name: ASH Pre Commit Scan
-  entry: powershell.exe -NoProfile -Command "Stop-Process -Name ash -ErrorAction SilentlyContinue; Remove-Item -Recurse -Force .ash -ErrorAction SilentlyContinue; New-Item -ItemType Directory -Force .ash\ash_output\reports | Out-Null; New-Item -ItemType Directory -Force .ash\ash_output\scanners | Out-Null; New-Item -ItemType Directory -Force .ash\ash_output\analysis | Out-Null; ash --mode local"
+  entry: powershell.exe -NoProfile -File scripts/run-ash.ps1
   language: system
   stages: [pre-commit]
 
 - id: ash-pre-push
   name: ASH Pre Push Scan
-  entry: powershell.exe -NoProfile -Command "Stop-Process -Name ash -ErrorAction SilentlyContinue; Remove-Item -Recurse -Force .ash -ErrorAction SilentlyContinue; New-Item -ItemType Directory -Force .ash\ash_output\reports | Out-Null; New-Item -ItemType Directory -Force .ash\ash_output\scanners | Out-Null; New-Item -ItemType Directory -Force .ash\ash_output\analysis | Out-Null; ash --mode local"
+  entry: powershell.exe -NoProfile -File scripts/run-ash.ps1
   language: system
   stages: [pre-push]

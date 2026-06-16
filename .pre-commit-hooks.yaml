@@ -1,11 +1,11 @@
 - id: ash-pre-commit
   name: ASH Pre Commit Scan
   entry: powershell.exe -NoProfile -Command "
-  $ErrorActionPreference='Stop';
-
-  $env:ASH_OUTPUT_DIR = \"$env:TEMP\\ash_output\";
-
-  ash --mode local --no-output-dir
+    $ErrorActionPreference='Stop';
+    $env:ASH_OUTPUT_DIR = \"$env:TEMP\\ash_output\";
+    $env:ASH_NO_GIT_MODIFICATIONS = \"true\";
+    ash --mode local --no-output-dir;
+    exit $LASTEXITCODE
   "
   language: system
   pass_filenames: false
@@ -14,11 +14,11 @@
 - id: ash-pre-push
   name: ASH Pre Push Scan
   entry: powershell.exe -NoProfile -Command "
-  $ErrorActionPreference='Stop';
-
-  $env:ASH_OUTPUT_DIR = \"$env:TEMP\\ash_output\";
-
-  ash --mode local --no-output-dir
+    $ErrorActionPreference='Stop';
+    $env:ASH_OUTPUT_DIR = \"$env:TEMP\\ash_output\";
+    $env:ASH_NO_GIT_MODIFICATIONS = \"true\";
+    ash --mode local --no-output-dir;
+    exit $LASTEXITCODE
   "
   language: system
   pass_filenames: false

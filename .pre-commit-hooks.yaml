@@ -1,13 +1,21 @@
 - id: ash-pre-commit
   name: ASH Pre Commit Scan
-  entry: ash --mode local --output-dir .ash_temp
-  language: system
+  entry: powershell.exe -NoProfile -Command "
+    $tmp = Join-Path $env:TEMP 'ash_scan';
+    Remove-Item -Recurse -Force $tmp -ErrorAction SilentlyContinue;
+    New-Item -ItemType Directory -Force $tmp | Out-Null;
+    ash --mode local --output-dir $tmp;
+  "  language: system
   pass_filenames: false
   stages: [pre-commit]
 
 - id: ash-pre-push
   name: ASH Pre Push Scan
-  entry: ash --mode local --output-dir .ash_temp
-  language: system
+  entry: powershell.exe -NoProfile -Command "
+    $tmp = Join-Path $env:TEMP 'ash_scan';
+    Remove-Item -Recurse -Force $tmp -ErrorAction SilentlyContinue;
+    New-Item -ItemType Directory -Force $tmp | Out-Null;
+    ash --mode local --output-dir $tmp;
+  "  language: system
   pass_filenames: false
   stages: [pre-push]

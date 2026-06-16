@@ -1,21 +1,11 @@
 - id: ash-pre-commit
   name: ASH Pre Commit Scan
-  entry: powershell
+  entry: pwsh -NoProfile -Command "ash --mode local; if ($LASTEXITCODE -ne 0) { exit 1 }"
   language: system
-  args:
-    - -ExecutionPolicy
-    - Bypass
-    - -File
-    - hooks/ash-pre-commit.ps1
   stages: [pre-commit]
 
 - id: ash-pre-push
   name: ASH Pre Push Scan
-  entry: powershell
+  entry: pwsh -NoProfile -Command "ash --mode local; if ($LASTEXITCODE -ne 0) { exit 1 }"
   language: system
-  args:
-    - -ExecutionPolicy
-    - Bypass
-    - -File
-    - hooks/ash-pre-push.ps1
   stages: [pre-push]

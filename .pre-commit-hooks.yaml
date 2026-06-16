@@ -5,9 +5,9 @@
   pass_filenames: false
   stages: [pre-commit]
 
-- id: ash-pre-commit
-  name: ASH Pre Commit Scan
+- id: ash-pre-push
+  name: ASH Pre Push Scan
   entry: ash --mode local
   language: system
   pass_filenames: false
-  stages: [pre-commit]
+  stages: [pre-push]

@@ -1,43 +1,31 @@
 - id: ash-pre-commit
   name: ASH Pre Commit Scan
-  entry: powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "
-    $ErrorActionPreference='Stop';
+  entry: >
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "
+      $ErrorActionPreference='Stop';
 
-    $out = '.ash/ash_output';
+      $out = Join-Path $env:TEMP 'ash_output';
 
-    Remove-Item -Recurse -Force .ash -ErrorAction SilentlyContinue;
+      Remove-Item -Recurse -Force $out -ErrorAction SilentlyContinue;
 
-    New-Item -ItemType Directory -Force $out | Out-Null;
-    New-Item -ItemType Directory -Force \"$out/reports\" | Out-Null;
-    New-Item -ItemType Directory -Force \"$out/scanners\" | Out-Null;
-    New-Item -ItemType Directory -Force \"$out/analysis\" | Out-Null;
-
-    $env:ASH_OUTPUT_DIR = (Resolve-Path $out);
-
-    ash --mode local
-  "
+      ash --mode precommit --output-dir $out
+    "
   language: system
   pass_filenames: false
   stages: [pre-commit]
 
-  - id: ash-pre-push
+- id: ash-pre-push
   name: ASH Pre Push Scan
-  entry: powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "
-    $ErrorActionPreference='Stop';
+  entry: >
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "
+      $ErrorActionPreference='Stop';
 
-    $out = '.ash/ash_output';
+      $out = Join-Path $env:TEMP 'ash_output';
 
-    Remove-Item -Recurse -Force .ash -ErrorAction SilentlyContinue;
+      Remove-Item -Recurse -Force $out -ErrorAction SilentlyContinue;
 
-    New-Item -ItemType Directory -Force $out | Out-Null;
-    New-Item -ItemType Directory -Force \"$out/reports\" | Out-Null;
-    New-Item -ItemType Directory -Force \"$out/scanners\" | Out-Null;
-    New-Item -ItemType Directory -Force \"$out/analysis\" | Out-Null;
-
-    $env:ASH_OUTPUT_DIR = (Resolve-Path $out);
-
-    ash --mode local
-  "
+      ash --mode local --output-dir $out
+    "
   language: system
   pass_filenames: false
   stages: [pre-push]

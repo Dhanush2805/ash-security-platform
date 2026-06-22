@@ -18,6 +18,23 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      # =========================
+      # GOVERNANCE CHECK (NEW)
+      # =========================
+      - name: Validate Email Domain
+        run: |
+          EMAIL=$(git log -1 --pretty=format:'%ae')
+
+          echo "Commit Email: $EMAIL"
+
+          if [[ ! "$EMAIL" =~ @usefulbi\.com$ ]]; then
+            echo "ERROR: Only @usefulbi.com emails are allowed"
+            exit 1
+          fi
+
+      # =========================
+      # ASH SECURITY SCAN FLOW
+      # =========================
       - name: Setup Python
         uses: actions/setup-python@v5
         with:

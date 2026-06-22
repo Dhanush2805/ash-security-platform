@@ -4,6 +4,21 @@
     powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "
       $ErrorActionPreference='Stop';
 
+      # =========================
+      # EMAIL DOMAIN VALIDATION
+      # =========================
+      $email = git config user.email
+      Write-Host 'Commit Email:' $email
+
+      if ($email -notmatch '@usefulbi\.com$') {
+        Write-Host '❌ BLOCKED: Only @usefulbi.com emails allowed'
+        exit 1
+      }
+      
+      # =========================
+      # EXISTING ASH FLOW (UNCHANGED)
+      # =========================
+
       $out = Join-Path $env:TEMP 'ash_output';
 
       Remove-Item -Recurse -Force $out -ErrorAction SilentlyContinue;
@@ -19,6 +34,21 @@
   entry: >
     powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "
       $ErrorActionPreference='Stop';
+
+      # =========================
+      # EMAIL DOMAIN VALIDATION
+      # =========================
+      $email = git config user.email
+      Write-Host 'Commit Email:' $email
+
+      if ($email -notmatch '@usefulbi\.com$') {
+        Write-Host '❌ BLOCKED: Only @usefulbi.com emails allowed'
+        exit 1
+      }
+
+      # =========================
+      # EXISTING ASH FLOW (UNCHANGED)
+      # =========================
 
       $out = Join-Path $env:TEMP 'ash_output';
 

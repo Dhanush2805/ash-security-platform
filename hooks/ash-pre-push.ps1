@@ -1,23 +1,20 @@
-Write-Host "Running Email Validation..."
+Write-Host "Running Pre-Push Security + Email Validation..."
 
 $email = git config user.email
 
+Write-Host "Commit Email: $email"
+
 if ($email -notmatch "@usefulbi\.com$") {
-    Write-Host ""
-    Write-Host "ERROR: Only @usefulbi.com email addresses are allowed."
-    Write-Host "Current Email: $email"
+    Write-Host "❌ BLOCKED: Only @usefulbi.com emails are allowed"
     exit 1
 }
-
-Write-Host "Email Validation Passed"
-
-Write-Host "Running ASH Pre-Push Scan..."
 
 ash --mode local
 
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "Security scan failed."
+    Write-Host "❌ ASH scan failed"
     exit 1
 }
 
+Write-Host "✅ Pre-Push Passed"
 exit 0

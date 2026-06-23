@@ -42,9 +42,16 @@
 
           try {
 
-            $license = python -c "import requests,sys; pkg=sys.argv[1]; data=requests.get('https://pypi.org/pypi/'+pkg+'/json',timeout=10).json(); info=data.get('info',dict()); print(info.get('license') or 'UNKNOWN')" $packageName
+            $response = Invoke-RestMethod `
+              -Uri "https://pypi.org/pypi/$packageName/json" `
+              -Method Get `
+              -TimeoutSec 10
 
-            $license = $license.Trim()
+            $license = $response.info.license
+
+            if ([string]::IsNullOrWhiteSpace($license)) {
+              $license = 'UNKNOWN'
+            }
 
           }
           catch {
@@ -65,6 +72,7 @@
             Write-Host '❌ Restricted License Found:' $packageName '->' $license
             $restrictedFound = $true
           }
+
         }
 
         if ($restrictedFound) {
@@ -133,9 +141,16 @@
 
           try {
 
-            $license = python -c "import requests,sys; pkg=sys.argv[1]; data=requests.get('https://pypi.org/pypi/'+pkg+'/json',timeout=10).json(); info=data.get('info',dict()); print(info.get('license') or 'UNKNOWN')" $packageName
+            $response = Invoke-RestMethod `
+              -Uri "https://pypi.org/pypi/$packageName/json" `
+              -Method Get `
+              -TimeoutSec 10
 
-            $license = $license.Trim()
+            $license = $response.info.license
+
+            if ([string]::IsNullOrWhiteSpace($license)) {
+              $license = 'UNKNOWN'
+            }
 
           }
           catch {
@@ -156,6 +171,7 @@
             Write-Host '❌ Restricted License Found:' $packageName '->' $license
             $restrictedFound = $true
           }
+
         }
 
         if ($restrictedFound) {
@@ -165,6 +181,7 @@
 
         Write-Host '✅ MODULE LICENSE COMPLIANCE PASSED'
       }
+      
       # =========================
       # EXISTING ASH FLOW (UNCHANGED)
       # =========================

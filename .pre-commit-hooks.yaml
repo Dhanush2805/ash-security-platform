@@ -42,7 +42,7 @@
 
           try {
 
-            $license = python -c "import requests; pkg='$packageName'; data=requests.get(f'https://pypi.org/pypi/{pkg}/json',timeout=10).json(); info=data.get('info',{}); print(info.get('license') or 'UNKNOWN')"
+            $license = python -c "import requests,sys; pkg=sys.argv[1]; data=requests.get('https://pypi.org/pypi/'+pkg+'/json',timeout=10).json(); info=data.get('info',dict()); print(info.get('license') or 'UNKNOWN')" $packageName
 
             $license = $license.Trim()
 
@@ -133,7 +133,7 @@
 
           try {
 
-            $license = python -c "import requests; pkg='$packageName'; data=requests.get(f'https://pypi.org/pypi/{pkg}/json',timeout=10).json(); info=data.get('info',{}); print(info.get('license') or 'UNKNOWN')"
+            $license = python -c "import requests,sys; pkg=sys.argv[1]; data=requests.get('https://pypi.org/pypi/'+pkg+'/json',timeout=10).json(); info=data.get('info',dict()); print(info.get('license') or 'UNKNOWN')" $packageName
 
             $license = $license.Trim()
 

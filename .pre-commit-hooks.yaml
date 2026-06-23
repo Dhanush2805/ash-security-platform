@@ -14,6 +14,68 @@
         Write-Host '❌ BLOCKED: Only @usefulbi.com emails allowed'
         exit 1
       }
+
+      # =========================
+      # MODULE LICENSE VALIDATION
+      # =========================
+
+      if (Test-Path 'requirements.txt') {
+
+        Write-Host 'Running Module License Compliance Checker...'
+
+        python -m pip install requests --quiet | Out-Null
+
+        $restrictedFound = $false
+
+        Get-Content requirements.txt | ForEach-Object {
+
+          $package = $_.Trim()
+
+          if (
+            $package -eq '' -or
+            $package.StartsWith('#')
+          ) {
+            return
+          }
+
+          $packageName = ($package -replace '[<>=!].*$','').Trim()
+
+          Write-Host 'Checking package:' $packageName
+
+          $license = python -c "
+import requests
+pkg='$packageName'
+try:
+    data=requests.get(f'https://pypi.org/pypi/{pkg}/json', timeout=10).json()
+    info=data.get('info', {})
+    print(info.get('license') or 'UNKNOWN')
+except:
+    print('UNKNOWN')
+"
+
+          $license = $license.Trim()
+
+          Write-Host 'License:' $license
+
+          if (
+            $license -match 'GPL' -or
+            $license -match 'AGPL' -or
+            $license -match 'LGPL' -or
+            $license -match 'SSPL' -or
+            $license -match 'UNKNOWN'
+          ) {
+            Write-Host '❌ Restricted License Found:' $packageName '->' $license
+            $restrictedFound = $true
+          }
+        }
+
+        if ($restrictedFound) {
+          Write-Host '❌ MODULE LICENSE COMPLIANCE FAILED'
+          exit 1
+        }
+
+        Write-Host '✅ MODULE LICENSE COMPLIANCE PASSED'
+      }
       
       # =========================
       # EXISTING ASH FLOW (UNCHANGED)
@@ -28,6 +90,7 @@
   language: system
   pass_filenames: false
   stages: [pre-commit]
+
 
 - id: ash-pre-push
   name: ASH Pre Push Scan
@@ -45,7 +108,67 @@
         Write-Host '❌ BLOCKED: Only @usefulbi.com emails allowed'
         exit 1
       }
+      # =========================
+      # MODULE LICENSE VALIDATION
+      # =========================
 
+      if (Test-Path 'requirements.txt') {
+
+        Write-Host 'Running Module License Compliance Checker...'
+
+        python -m pip install requests --quiet | Out-Null
+
+        $restrictedFound = $false
+
+        Get-Content requirements.txt | ForEach-Object {
+
+          $package = $_.Trim()
+
+          if (
+            $package -eq '' -or
+            $package.StartsWith('#')
+          ) {
+            return
+          }
+
+          $packageName = ($package -replace '[<>=!].*$','').Trim()
+
+          Write-Host 'Checking package:' $packageName
+
+          $license = python -c "
+import requests
+pkg='$packageName'
+try:
+    data=requests.get(f'https://pypi.org/pypi/{pkg}/json', timeout=10).json()
+    info=data.get('info', {})
+    print(info.get('license') or 'UNKNOWN')
+except:
+    print('UNKNOWN')
+"
+
+          $license = $license.Trim()
+
+          Write-Host 'License:' $license
+
+          if (
+            $license -match 'GPL' -or
+            $license -match 'AGPL' -or
+            $license -match 'LGPL' -or
+            $license -match 'SSPL' -or
+            $license -match 'UNKNOWN'
+          ) {
+            Write-Host '❌ Restricted License Found:' $packageName '->' $license
+            $restrictedFound = $true
+          }
+        }
+
+        if ($restrictedFound) {
+          Write-Host '❌ MODULE LICENSE COMPLIANCE FAILED'
+          exit 1
+        }
+
+        Write-Host '✅ MODULE LICENSE COMPLIANCE PASSED'
+      }
       # =========================
       # EXISTING ASH FLOW (UNCHANGED)
       # =========================

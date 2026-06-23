@@ -23,8 +23,6 @@
 
         Write-Host 'Running Module License Compliance Checker...'
 
-        python -m pip install requests --quiet | Out-Null
-
         $restrictedFound = $false
 
         Get-Content requirements.txt | ForEach-Object {
@@ -42,18 +40,18 @@
 
           Write-Host 'Checking package:' $packageName
 
-          $license = python -c "
-import requests
-pkg='$packageName'
-try:
-    data=requests.get(f'https://pypi.org/pypi/{pkg}/json', timeout=10).json()
-    info=data.get('info', {})
-    print(info.get('license') or 'UNKNOWN')
-except:
-    print('UNKNOWN')
-"
+          try {
 
-          $license = $license.Trim()
+            $license = python -c "import requests; pkg='$packageName'; data=requests.get(f'https://pypi.org/pypi/{pkg}/json',timeout=10).json(); info=data.get('info',{}); print(info.get('license') or 'UNKNOWN')"
+
+            $license = $license.Trim()
+
+          }
+          catch {
+
+            $license = 'UNKNOWN'
+
+          }
 
           Write-Host 'License:' $license
 
@@ -116,8 +114,6 @@ except:
 
         Write-Host 'Running Module License Compliance Checker...'
 
-        python -m pip install requests --quiet | Out-Null
-
         $restrictedFound = $false
 
         Get-Content requirements.txt | ForEach-Object {
@@ -135,18 +131,18 @@ except:
 
           Write-Host 'Checking package:' $packageName
 
-          $license = python -c "
-import requests
-pkg='$packageName'
-try:
-    data=requests.get(f'https://pypi.org/pypi/{pkg}/json', timeout=10).json()
-    info=data.get('info', {})
-    print(info.get('license') or 'UNKNOWN')
-except:
-    print('UNKNOWN')
-"
+          try {
 
-          $license = $license.Trim()
+            $license = python -c "import requests; pkg='$packageName'; data=requests.get(f'https://pypi.org/pypi/{pkg}/json',timeout=10).json(); info=data.get('info',{}); print(info.get('license') or 'UNKNOWN')"
+
+            $license = $license.Trim()
+
+          }
+          catch {
+
+            $license = 'UNKNOWN'
+
+          }
 
           Write-Host 'License:' $license
 

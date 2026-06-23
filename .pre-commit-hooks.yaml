@@ -23,6 +23,76 @@
 
         Write-Host 'Running Module License Compliance Checker...'
 
+        $approvedLicenses = @(
+          'Apache',
+          'Apache-2.0',
+          'Apache 2.0',
+          'Apache-1.1',
+
+          'BSD',
+          'BSD-1-Clause',
+          'BSD-2-Clause',
+          'BSD-2-Clause-FreeBSD',
+          'BSD-3-Clause',
+          'BSD-3-Clause-Attribution',
+          'BSD-Source-Code',
+          '0BSD',
+          'EDL',
+          'HDF5',
+          'OLDAP-2.8',
+
+          'MIT',
+          'ISC',
+          'X11',
+          'BouncyCastle',
+          'Boost',
+          'PostgreSQL',
+          'PIL',
+          'curl',
+          'NTP',
+
+          'Zlib',
+          'zlib-acknowledgement',
+          'libpng',
+          'bzip2',
+          'Spencer-94',
+
+          'Python Software Foundation',
+          'Python-2.0',
+          'Python-2.1.1',
+
+          'OpenSSL',
+          'JSON',
+          'libjpeg',
+
+          'WTFPL',
+          'WTFPL-2.0',
+          'WTF',
+
+          'Unicode',
+          'Unicode-DFS-2015',
+          'Unicode-DFS-2016',
+
+          'CC-Zero',
+          'CC0',
+          'SQLite',
+          'Unlicense',
+          'ODC Public Domain',
+
+          'Realm SDK License',
+
+          'SIL Open Font License',
+          'OFL',
+
+          # Project-specific approvals
+          'Pillow',
+          'Python Imaging Library',
+          'FreeType',
+          'ICU',
+          'libtiff',
+          'SPIRV-Headers'
+        )
+
         $restrictedFound = $false
 
         Get-Content requirements.txt | ForEach-Object {
@@ -50,37 +120,63 @@
             $license = $response.info.license
 
             if ([string]::IsNullOrWhiteSpace($license)) {
-              $license = 'UNKNOWN'
+
+              $license = (
+                $response.info.classifiers |
+                Where-Object { $_ -like "License::*" } |
+                Select-Object -First 1
+              )
+
+            }
+
+            if ([string]::IsNullOrWhiteSpace($license)) {
+              $license = "UNKNOWN"
             }
 
           }
           catch {
 
-            $license = 'UNKNOWN'
+            $license = "UNKNOWN"
 
           }
 
           Write-Host 'License:' $license
 
-          if (
-            $license -match 'GPL' -or
-            $license -match 'AGPL' -or
-            $license -match 'LGPL' -or
-            $license -match 'SSPL' -or
-            $license -match 'UNKNOWN'
-          ) {
-            Write-Host '❌ Restricted License Found:' $packageName '->' $license
+          $approved = $false
+
+          foreach ($allowed in $approvedLicenses) {
+
+            if ($license -match [regex]::Escape($allowed)) {
+              $approved = $true
+              break
+            }
+
+          }
+
+          if (-not $approved) {
+
+            Write-Host "❌ NON-APPROVED LICENSE: $packageName -> $license"
+
             $restrictedFound = $true
+
+          }
+          else {
+
+            Write-Host "✅ APPROVED LICENSE: $packageName -> $license"
+
           }
 
         }
 
         if ($restrictedFound) {
+
           Write-Host '❌ MODULE LICENSE COMPLIANCE FAILED'
           exit 1
+
         }
 
         Write-Host '✅ MODULE LICENSE COMPLIANCE PASSED'
+
       }
       
       # =========================
@@ -122,6 +218,76 @@
 
         Write-Host 'Running Module License Compliance Checker...'
 
+        $approvedLicenses = @(
+          'Apache',
+          'Apache-2.0',
+          'Apache 2.0',
+          'Apache-1.1',
+
+          'BSD',
+          'BSD-1-Clause',
+          'BSD-2-Clause',
+          'BSD-2-Clause-FreeBSD',
+          'BSD-3-Clause',
+          'BSD-3-Clause-Attribution',
+          'BSD-Source-Code',
+          '0BSD',
+          'EDL',
+          'HDF5',
+          'OLDAP-2.8',
+
+          'MIT',
+          'ISC',
+          'X11',
+          'BouncyCastle',
+          'Boost',
+          'PostgreSQL',
+          'PIL',
+          'curl',
+          'NTP',
+
+          'Zlib',
+          'zlib-acknowledgement',
+          'libpng',
+          'bzip2',
+          'Spencer-94',
+
+          'Python Software Foundation',
+          'Python-2.0',
+          'Python-2.1.1',
+
+          'OpenSSL',
+          'JSON',
+          'libjpeg',
+
+          'WTFPL',
+          'WTFPL-2.0',
+          'WTF',
+
+          'Unicode',
+          'Unicode-DFS-2015',
+          'Unicode-DFS-2016',
+
+          'CC-Zero',
+          'CC0',
+          'SQLite',
+          'Unlicense',
+          'ODC Public Domain',
+
+          'Realm SDK License',
+
+          'SIL Open Font License',
+          'OFL',
+
+          # Project-specific approvals
+          'Pillow',
+          'Python Imaging Library',
+          'FreeType',
+          'ICU',
+          'libtiff',
+          'SPIRV-Headers'
+        )
+
         $restrictedFound = $false
 
         Get-Content requirements.txt | ForEach-Object {
@@ -149,39 +315,64 @@
             $license = $response.info.license
 
             if ([string]::IsNullOrWhiteSpace($license)) {
-              $license = 'UNKNOWN'
+
+              $license = (
+                $response.info.classifiers |
+                Where-Object { $_ -like "License::*" } |
+                Select-Object -First 1
+              )
+
+            }
+
+            if ([string]::IsNullOrWhiteSpace($license)) {
+              $license = "UNKNOWN"
             }
 
           }
           catch {
 
-            $license = 'UNKNOWN'
+            $license = "UNKNOWN"
 
           }
 
           Write-Host 'License:' $license
 
-          if (
-            $license -match 'GPL' -or
-            $license -match 'AGPL' -or
-            $license -match 'LGPL' -or
-            $license -match 'SSPL' -or
-            $license -match 'UNKNOWN'
-          ) {
-            Write-Host '❌ Restricted License Found:' $packageName '->' $license
+          $approved = $false
+
+          foreach ($allowed in $approvedLicenses) {
+
+            if ($license -match [regex]::Escape($allowed)) {
+              $approved = $true
+              break
+            }
+
+          }
+
+          if (-not $approved) {
+
+            Write-Host "❌ NON-APPROVED LICENSE: $packageName -> $license"
+
             $restrictedFound = $true
+
+          }
+          else {
+
+            Write-Host "✅ APPROVED LICENSE: $packageName -> $license"
+
           }
 
         }
 
         if ($restrictedFound) {
+
           Write-Host '❌ MODULE LICENSE COMPLIANCE FAILED'
           exit 1
+
         }
 
         Write-Host '✅ MODULE LICENSE COMPLIANCE PASSED'
-      }
-      
+
+      }      
       # =========================
       # EXISTING ASH FLOW (UNCHANGED)
       # =========================

@@ -33,6 +33,176 @@ jobs:
           fi
 
       # =========================
+      # MODULE LICENSE VALIDATION
+      # =========================
+      - name: Validate Module Licenses
+        run: |
+
+          if [ ! -f requirements.txt ]; then
+            echo "No requirements.txt found. Skipping license validation."
+            exit 0
+          fi
+
+          echo "Running Module License Compliance Checker..."
+
+          APPROVED_LICENSES=(
+            "Apache"
+            "Apache-2.0"
+            "Apache 2.0"
+            "Apache-1.1"
+
+            "BSD"
+            "BSD-1-Clause"
+            "BSD-2-Clause"
+            "BSD-2-Clause-FreeBSD"
+            "BSD-3-Clause"
+            "BSD-3-Clause-Attribution"
+            "BSD-Source-Code"
+            "0BSD"
+            "EDL"
+            "HDF5"
+            "OLDAP-2.8"
+
+            "MIT"
+            "ISC"
+            "X11"
+            "BouncyCastle"
+            "Boost"
+            "PostgreSQL"
+            "PIL"
+            "curl"
+            "NTP"
+
+            "Zlib"
+            "zlib-acknowledgement"
+            "libpng"
+            "bzip2"
+            "Spencer-94"
+
+            "Python Software Foundation"
+            "Python-2.0"
+            "Python-2.1.1"
+
+            "OpenSSL"
+            "JSON"
+            "libjpeg"
+
+            "WTFPL"
+            "WTFPL-2.0"
+            "WTF"
+
+            "Unicode"
+            "Unicode-DFS-2015"
+            "Unicode-DFS-2016"
+
+            "CC-Zero"
+            "CC0"
+            "SQLite"
+            "Unlicense"
+            "ODC Public Domain"
+
+            "Realm SDK License"
+
+            "SIL Open Font License"
+            "OFL"
+
+            # Project-specific approvals
+            "Pillow"
+            "Python Imaging Library"
+            "FreeType"
+            "ICU"
+            "libtiff"
+            "SPIRV-Headers"
+          )
+
+          RESTRICTED_FOUND=0
+
+          while IFS= read -r line || [ -n "$line" ]; do
+
+            PACKAGE=$(echo "$line" | xargs)
+
+            if [[ -z "$PACKAGE" ]]; then
+              continue
+            fi
+
+            if [[ "$PACKAGE" =~ ^# ]]; then
+              continue
+            fi
+
+            if [[ "$PACKAGE" =~ ^-r ]]; then
+              continue
+            fi
+
+            if [[ "$PACKAGE" =~ ^-e ]]; then
+              continue
+            fi
+
+            if [[ "$PACKAGE" =~ ^git\+ ]]; then
+              continue
+            fi
+
+            PACKAGE_NAME=$(echo "$PACKAGE" | sed 's/[<>=!~].*$//')
+
+            echo "Checking package: $PACKAGE_NAME"
+
+            RESPONSE=$(curl -s "https://pypi.org/pypi/${PACKAGE_NAME}/json")
+
+            # =====================================================
+            # LICENSE EXTRACTION
+            # Same order as PowerShell hook:
+            # license_expression -> license -> classifiers -> UNKNOWN
+            # =====================================================
+
+            LICENSE=$(echo "$RESPONSE" | grep -o '"license_expression":"[^"]*"' | head -1 | cut -d':' -f2- | tr -d '"')
+
+            if [ -z "$LICENSE" ] || [ "$LICENSE" = "null" ]; then
+              LICENSE=$(echo "$RESPONSE" | grep -o '"license":"[^"]*"' | head -1 | cut -d':' -f2- | tr -d '"')
+            fi
+
+            if [ -z "$LICENSE" ] || [ "$LICENSE" = "null" ]; then
+              LICENSE=$(echo "$RESPONSE" | grep -o 'License :: [^"]*' | head -1)
+            fi
+
+            if [ -z "$LICENSE" ] || [ "$LICENSE" = "null" ]; then
+              LICENSE="UNKNOWN"
+            fi
+
+            echo "License: $LICENSE"
+
+            APPROVED=0
+
+            for ALLOWED in "${APPROVED_LICENSES[@]}"; do
+
+              if [[ "$LICENSE" == *"$ALLOWED"* ]]; then
+                APPROVED=1
+                break
+              fi
+
+            done
+
+            if [ $APPROVED -eq 0 ]; then
+
+              echo "❌ NON-APPROVED LICENSE: $PACKAGE_NAME -> $LICENSE"
+              RESTRICTED_FOUND=1
+
+            else
+
+              echo "✅ APPROVED LICENSE: $PACKAGE_NAME -> $LICENSE"
+
+            fi
+
+          done < requirements.txt
+
+          if [ $RESTRICTED_FOUND -eq 1 ]; then
+
+            echo "❌ MODULE LICENSE COMPLIANCE FAILED"
+            exit 1
+
+          fi
+
+          echo "✅ MODULE LICENSE COMPLIANCE PASSED"
+
+      # =========================
       # ASH SECURITY SCAN FLOW
       # =========================
       - name: Setup Python

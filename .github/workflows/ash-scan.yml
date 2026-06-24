@@ -32,7 +32,7 @@ jobs:
 
           echo "Commit Email: $EMAIL"
 
-          if [[ ! "$EMAIL" =~ @usefulbi\.com$ ]]; then
+          if [[ ! "$EMAIL" =~ @usefulbi\.com$ && "$EMAIL" != "91242235+Dhanush2805@users.noreply.github.com" ]]; then
             echo "ERROR: Only @usefulbi.com emails are allowed"
             exit 1
           fi

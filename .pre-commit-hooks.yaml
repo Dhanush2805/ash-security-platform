@@ -186,6 +186,30 @@
         Write-Host '✅ MODULE LICENSE COMPLIANCE PASSED'
 
       }
+
+
+      # =========================
+      # BUILD DOCKER IMAGE (if Dockerfile exists)
+      # =========================
+
+      if (Test-Path 'Dockerfile') {
+
+        Write-Host ''
+        Write-Host 'Dockerfile detected.'
+        Write-Host 'Building Docker image for Grype scan...'
+
+        docker build -t ash-local-image .
+
+        if ($LASTEXITCODE -ne 0) {
+
+          Write-Host '❌ Docker image build failed.'
+          exit 1
+
+        }
+
+        Write-Host '✅ Docker image built successfully.'
+
+      }
       
       # =========================
       # EXISTING ASH FLOW (UNCHANGED)
@@ -387,7 +411,32 @@
 
         Write-Host '✅ MODULE LICENSE COMPLIANCE PASSED'
 
-      }      
+      }     
+
+      # =========================
+      # BUILD DOCKER IMAGE (if Dockerfile exists)
+      # =========================
+
+      if (Test-Path 'Dockerfile') {
+
+        Write-Host ''
+        Write-Host 'Dockerfile detected.'
+        Write-Host 'Building Docker image for Grype scan...'
+
+        docker build -t ash-local-image .
+
+        if ($LASTEXITCODE -ne 0) {
+
+          Write-Host '❌ Docker image build failed.'
+          exit 1
+
+        }
+
+        Write-Host '✅ Docker image built successfully.'
+
+      }
+
+      
       # =========================
       # EXISTING ASH FLOW (UNCHANGED)
       # =========================

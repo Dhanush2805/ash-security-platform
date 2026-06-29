@@ -215,7 +215,7 @@
               $context = $dockerfile.DirectoryName
 
               $folderName = $dockerfile.Directory.Name -replace '[^a-zA-Z0-9-]', '-'
-              $imageName = "ash-$($folderName.ToLower())"
+              $imageName = ('ash-' + $folderName).ToLower()
               $BuiltImages += $imageName
 
               Write-Host ""
@@ -228,8 +228,7 @@
 
               Write-Host "Building Docker Image..."
 
-              docker build -t $imageName $context
-
+              docker build --tag $imageName $context
               if ($LASTEXITCODE -ne 0) {
 
                   Write-Host ""
@@ -248,8 +247,8 @@
       Write-Host "Docker Images Built:"
       Write-Host "==============================="
 
-      $BuiltImages | ForEach-Object {
-          Write-Host " - $_"
+      foreach ($img in $BuiltImages) {
+          Write-Host (" - " + $img)
       }
       # =========================
       # EXISTING ASH FLOW (UNCHANGED)
@@ -481,7 +480,7 @@
               $context = $dockerfile.DirectoryName
 
               $folderName = $dockerfile.Directory.Name -replace '[^a-zA-Z0-9-]', '-'
-              $imageName = "ash-$($folderName.ToLower())"
+              $imageName = ('ash-' + $folderName).ToLower()
               $BuiltImages += $imageName
 
               Write-Host ""
@@ -494,8 +493,7 @@
 
               Write-Host "Building Docker Image..."
 
-              docker build -t $imageName $context
-
+              docker build --tag $imageName $context
               if ($LASTEXITCODE -ne 0) {
 
                   Write-Host ""
@@ -514,8 +512,8 @@
       Write-Host "Docker Images Built:"
       Write-Host "==============================="
 
-      $BuiltImages | ForEach-Object {
-          Write-Host " - $_"
+      foreach ($img in $BuiltImages) {
+          Write-Host (" - " + $img)
       }
 
       

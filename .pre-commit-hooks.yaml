@@ -206,7 +206,7 @@
       else {
 
           Write-Host ""
-          Write-Host "Found $($dockerfiles.Count) Dockerfile(s)."
+          Write-Host ("Found {0} Dockerfile(s)." -f $dockerfiles.Count)
 
           foreach ($dockerfile in $dockerfiles) {
 
@@ -452,7 +452,7 @@
       }     
 
       
-            # =========================
+      # =========================
       # BUILD ALL DOCKER IMAGES
       # =========================
       
@@ -470,7 +470,7 @@
       else {
 
           Write-Host ""
-          Write-Host "Found $($dockerfiles.Count) Dockerfile(s)."
+          Write-Host ("Found {0} Dockerfile(s)." -f $dockerfiles.Count)
 
           foreach ($dockerfile in $dockerfiles) {
 

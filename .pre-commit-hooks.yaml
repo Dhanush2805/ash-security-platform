@@ -206,8 +206,10 @@
       else {
 
           Write-Host ""
-          Write-Host ("Found {0} Dockerfile(s)." -f $dockerfiles.Count)
-
+          Write-Host "===================================="
+          Write-Host "Dockerfiles Found:"
+          Write-Host $dockerfiles.Count
+          Write-Host "===================================="
           foreach ($dockerfile in $dockerfiles) {
 
               $context = $dockerfile.DirectoryName
@@ -470,8 +472,10 @@
       else {
 
           Write-Host ""
-          Write-Host ("Found {0} Dockerfile(s)." -f $dockerfiles.Count)
-
+          Write-Host "===================================="
+          Write-Host "Dockerfiles Found:"
+          Write-Host $dockerfiles.Count
+          Write-Host "===================================="
           foreach ($dockerfile in $dockerfiles) {
 
               $context = $dockerfile.DirectoryName

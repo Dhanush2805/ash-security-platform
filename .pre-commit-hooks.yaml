@@ -189,25 +189,53 @@
 
 
       # =========================
-      # BUILD DOCKER IMAGE (if Dockerfile exists)
+      # BUILD ALL DOCKER IMAGES
       # =========================
 
-      if (Test-Path 'Dockerfile') {
+      $dockerfiles = Get-ChildItem -Recurse -Filter Dockerfile
 
-        Write-Host ''
-        Write-Host 'Dockerfile detected.'
-        Write-Host 'Building Docker image for Grype scan...'
+      if ($dockerfiles.Count -eq 0) {
 
-        docker build -t ash-local-image .
+          Write-Host ""
+          Write-Host "No Dockerfile found."
+          Write-Host "Skipping Docker image build."
 
-        if ($LASTEXITCODE -ne 0) {
+      }
+      else {
 
-          Write-Host '❌ Docker image build failed.'
-          exit 1
+          Write-Host ""
+          Write-Host "Found $($dockerfiles.Count) Dockerfile(s)."
 
-        }
+          foreach ($dockerfile in $dockerfiles) {
 
-        Write-Host '✅ Docker image built successfully.'
+              $context = $dockerfile.DirectoryName
+
+              $folderName = $dockerfile.Directory.Name -replace '[^a-zA-Z0-9-]', '-'
+              $imageName = "ash-$($folderName.ToLower())"
+
+              Write-Host ""
+              Write-Host "------------------------------------------"
+              Write-Host "Dockerfile:"
+              Write-Host $dockerfile.FullName
+
+              Write-Host "Image Name:"
+              Write-Host $imageName
+
+              Write-Host "Building Docker Image..."
+
+              docker build -t $imageName $context
+
+              if ($LASTEXITCODE -ne 0) {
+
+                  Write-Host ""
+                  Write-Host "Docker build failed."
+                  exit 1
+
+              }
+
+              Write-Host "Docker image built successfully."
+
+          }
 
       }
       
@@ -413,26 +441,55 @@
 
       }     
 
+      
       # =========================
-      # BUILD DOCKER IMAGE (if Dockerfile exists)
+      # BUILD ALL DOCKER IMAGES
       # =========================
 
-      if (Test-Path 'Dockerfile') {
+      $dockerfiles = Get-ChildItem -Recurse -Filter Dockerfile
 
-        Write-Host ''
-        Write-Host 'Dockerfile detected.'
-        Write-Host 'Building Docker image for Grype scan...'
+      if ($dockerfiles.Count -eq 0) {
 
-        docker build -t ash-local-image .
+          Write-Host ""
+          Write-Host "No Dockerfile found."
+          Write-Host "Skipping Docker image build."
 
-        if ($LASTEXITCODE -ne 0) {
+      }
+      else {
 
-          Write-Host '❌ Docker image build failed.'
-          exit 1
+          Write-Host ""
+          Write-Host "Found $($dockerfiles.Count) Dockerfile(s)."
 
-        }
+          foreach ($dockerfile in $dockerfiles) {
 
-        Write-Host '✅ Docker image built successfully.'
+              $context = $dockerfile.DirectoryName
+
+              $folderName = $dockerfile.Directory.Name -replace '[^a-zA-Z0-9-]', '-'
+              $imageName = "ash-$($folderName.ToLower())"
+
+              Write-Host ""
+              Write-Host "------------------------------------------"
+              Write-Host "Dockerfile:"
+              Write-Host $dockerfile.FullName
+
+              Write-Host "Image Name:"
+              Write-Host $imageName
+
+              Write-Host "Building Docker Image..."
+
+              docker build -t $imageName $context
+
+              if ($LASTEXITCODE -ne 0) {
+
+                  Write-Host ""
+                  Write-Host "Docker build failed."
+                  exit 1
+
+              }
+
+              Write-Host "Docker image built successfully."
+
+          }
 
       }
 

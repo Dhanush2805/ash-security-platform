@@ -248,7 +248,7 @@
       Write-Host "==============================="
 
       foreach ($img in $BuiltImages) {
-          Write-Host (" - " + $img)
+          Write-Host $img
       }
       # =========================
       # EXISTING ASH FLOW (UNCHANGED)
@@ -513,7 +513,7 @@
       Write-Host "==============================="
 
       foreach ($img in $BuiltImages) {
-          Write-Host (" - " + $img)
+          Write-Host $img
       }
 
       

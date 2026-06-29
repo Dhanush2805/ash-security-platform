@@ -191,6 +191,8 @@
       # =========================
       # BUILD ALL DOCKER IMAGES
       # =========================
+      
+      $BuiltImages = @()
 
       $dockerfiles = Get-ChildItem -Recurse -Filter Dockerfile
 
@@ -212,6 +214,7 @@
 
               $folderName = $dockerfile.Directory.Name -replace '[^a-zA-Z0-9-]', '-'
               $imageName = "ash-$($folderName.ToLower())"
+              $BuiltImages += $imageName
 
               Write-Host ""
               Write-Host "------------------------------------------"
@@ -238,7 +241,14 @@
           }
 
       }
-      
+      Write-Host ""
+      Write-Host "==============================="
+      Write-Host "Docker Images Built:"
+      Write-Host "==============================="
+
+      $BuiltImages | ForEach-Object {
+          Write-Host " - $_"
+      }
       # =========================
       # EXISTING ASH FLOW (UNCHANGED)
       # =========================
@@ -442,9 +452,11 @@
       }     
 
       
-      # =========================
+            # =========================
       # BUILD ALL DOCKER IMAGES
       # =========================
+      
+      $BuiltImages = @()
 
       $dockerfiles = Get-ChildItem -Recurse -Filter Dockerfile
 
@@ -466,6 +478,7 @@
 
               $folderName = $dockerfile.Directory.Name -replace '[^a-zA-Z0-9-]', '-'
               $imageName = "ash-$($folderName.ToLower())"
+              $BuiltImages += $imageName
 
               Write-Host ""
               Write-Host "------------------------------------------"
@@ -491,6 +504,14 @@
 
           }
 
+      }
+      Write-Host ""
+      Write-Host "==============================="
+      Write-Host "Docker Images Built:"
+      Write-Host "==============================="
+
+      $BuiltImages | ForEach-Object {
+          Write-Host " - $_"
       }
 
       

@@ -192,64 +192,64 @@
       # BUILD ALL DOCKER IMAGES
       # =========================
       
-      $BuiltImages = @()
+      # $BuiltImages = @()
 
-      $dockerfiles = Get-ChildItem -Recurse -Filter Dockerfile
+      # $dockerfiles = Get-ChildItem -Recurse -Filter Dockerfile
 
-      if ($dockerfiles.Count -eq 0) {
+      # if ($dockerfiles.Count -eq 0) {
 
-          Write-Host ""
-          Write-Host "No Dockerfile found."
-          Write-Host "Skipping Docker image build."
+      #     Write-Host ""
+      #     Write-Host "No Dockerfile found."
+      #     Write-Host "Skipping Docker image build."
 
-      }
-      else {
+      # }
+      # else {
 
-          Write-Host ""
-          Write-Host "===================================="
-          Write-Host "Dockerfiles Found:"
-          Write-Host $dockerfiles.Count
-          Write-Host "===================================="
-          foreach ($dockerfile in $dockerfiles) {
+      #     Write-Host ""
+      #     Write-Host "===================================="
+      #     Write-Host "Dockerfiles Found:"
+      #     Write-Host $dockerfiles.Count
+      #     Write-Host "===================================="
+      #     foreach ($dockerfile in $dockerfiles) {
 
-              $context = $dockerfile.DirectoryName
+      #         $context = $dockerfile.DirectoryName
 
-              $folderName = $dockerfile.Directory.Name -replace '[^a-zA-Z0-9-]', '-'
-              $imageName = ('ash-' + $folderName).ToLower()
-              $BuiltImages += $imageName
+      #         $folderName = $dockerfile.Directory.Name -replace '[^a-zA-Z0-9-]', '-'
+      #         $imageName = ('ash-' + $folderName).ToLower()
+      #         $BuiltImages += $imageName
 
-              Write-Host ""
-              Write-Host "------------------------------------------"
-              Write-Host "Dockerfile:"
-              Write-Host $dockerfile.FullName
+      #         Write-Host ""
+      #         Write-Host "------------------------------------------"
+      #         Write-Host "Dockerfile:"
+      #         Write-Host $dockerfile.FullName
 
-              Write-Host "Image Name:"
-              Write-Host $imageName
+      #         Write-Host "Image Name:"
+      #         Write-Host $imageName
 
-              Write-Host "Building Docker Image..."
+      #         Write-Host "Building Docker Image..."
 
-              docker build --tag $imageName $context
-              if ($LASTEXITCODE -ne 0) {
+      #         docker build --tag $imageName $context
+      #         if ($LASTEXITCODE -ne 0) {
 
-                  Write-Host ""
-                  Write-Host "Docker build failed."
-                  exit 1
+      #             Write-Host ""
+      #             Write-Host "Docker build failed."
+      #             exit 1
 
-              }
+      #         }
 
-              Write-Host "Docker image built successfully."
+      #         Write-Host "Docker image built successfully."
 
-          }
+      #     }
 
-      }
-      Write-Host ""
-      Write-Host "==============================="
-      Write-Host "Docker Images Built:"
-      Write-Host "==============================="
+      # }
+      # Write-Host ""
+      # Write-Host "==============================="
+      # Write-Host "Docker Images Built:"
+      # Write-Host "==============================="
 
-      foreach ($img in $BuiltImages) {
-          Write-Host $img
-      }
+      # foreach ($img in $BuiltImages) {
+      #     Write-Host $img
+      # }
       # =========================
       # EXISTING ASH FLOW (UNCHANGED)
       # =========================
@@ -457,64 +457,64 @@
       # BUILD ALL DOCKER IMAGES
       # =========================
       
-      $BuiltImages = @()
+      # $BuiltImages = @()
 
-      $dockerfiles = Get-ChildItem -Recurse -Filter Dockerfile
+      # $dockerfiles = Get-ChildItem -Recurse -Filter Dockerfile
 
-      if ($dockerfiles.Count -eq 0) {
+      # if ($dockerfiles.Count -eq 0) {
 
-          Write-Host ""
-          Write-Host "No Dockerfile found."
-          Write-Host "Skipping Docker image build."
+      #     Write-Host ""
+      #     Write-Host "No Dockerfile found."
+      #     Write-Host "Skipping Docker image build."
 
-      }
-      else {
+      # }
+      # else {
 
-          Write-Host ""
-          Write-Host "===================================="
-          Write-Host "Dockerfiles Found:"
-          Write-Host $dockerfiles.Count
-          Write-Host "===================================="
-          foreach ($dockerfile in $dockerfiles) {
+      #     Write-Host ""
+      #     Write-Host "===================================="
+      #     Write-Host "Dockerfiles Found:"
+      #     Write-Host $dockerfiles.Count
+      #     Write-Host "===================================="
+      #     foreach ($dockerfile in $dockerfiles) {
 
-              $context = $dockerfile.DirectoryName
+      #         $context = $dockerfile.DirectoryName
 
-              $folderName = $dockerfile.Directory.Name -replace '[^a-zA-Z0-9-]', '-'
-              $imageName = ('ash-' + $folderName).ToLower()
-              $BuiltImages += $imageName
+      #         $folderName = $dockerfile.Directory.Name -replace '[^a-zA-Z0-9-]', '-'
+      #         $imageName = ('ash-' + $folderName).ToLower()
+      #         $BuiltImages += $imageName
 
-              Write-Host ""
-              Write-Host "------------------------------------------"
-              Write-Host "Dockerfile:"
-              Write-Host $dockerfile.FullName
+      #         Write-Host ""
+      #         Write-Host "------------------------------------------"
+      #         Write-Host "Dockerfile:"
+      #         Write-Host $dockerfile.FullName
 
-              Write-Host "Image Name:"
-              Write-Host $imageName
+      #         Write-Host "Image Name:"
+      #         Write-Host $imageName
 
-              Write-Host "Building Docker Image..."
+      #         Write-Host "Building Docker Image..."
 
-              docker build --tag $imageName $context
-              if ($LASTEXITCODE -ne 0) {
+      #         docker build --tag $imageName $context
+      #         if ($LASTEXITCODE -ne 0) {
 
-                  Write-Host ""
-                  Write-Host "Docker build failed."
-                  exit 1
+      #             Write-Host ""
+      #             Write-Host "Docker build failed."
+      #             exit 1
 
-              }
+      #         }
 
-              Write-Host "Docker image built successfully."
+      #         Write-Host "Docker image built successfully."
 
-          }
+      #     }
 
-      }
-      Write-Host ""
-      Write-Host "==============================="
-      Write-Host "Docker Images Built:"
-      Write-Host "==============================="
+      # }
+      # Write-Host ""
+      # Write-Host "==============================="
+      # Write-Host "Docker Images Built:"
+      # Write-Host "==============================="
 
-      foreach ($img in $BuiltImages) {
-          Write-Host $img
-      }
+      # foreach ($img in $BuiltImages) {
+      #     Write-Host $img
+      # }
 
       
       # =========================

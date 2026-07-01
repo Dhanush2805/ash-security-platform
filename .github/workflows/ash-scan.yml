@@ -215,10 +215,35 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Install ASH
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          
+      - name: Install ASH & CDK Dependencies
         run: |
           pip install git+https://github.com/awslabs/automated-security-helper.git@v3.5.4
+          
+          # Required for CDK-Nag
+          pip install aws-cdk-lib==2.260.0
+          pip install constructs
+          pip install cdk-nag==2.28.195
 
+
+      - name: Verify CDK Environment
+        run: |
+          python --version
+          node --version
+          npm --version
+
+          pip show automated-security-helper
+          pip show aws-cdk-lib
+          pip show constructs
+          pip show cdk-nag
+
+          python -c "import cdk_nag; print('✅ cdk_nag imported successfully')"
+          python -c "from aws_cdk import App; print('✅ aws_cdk imported successfully')"
+      
       - name: Run ASH Scan
         run: |
           ash --mode local

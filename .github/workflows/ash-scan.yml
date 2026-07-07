@@ -326,6 +326,36 @@ jobs:
           echo "========== SEARCHING FOR SEMGREP =========="
           find /home/runner -iname "*semgrep*" 2>/dev/null || true
 
+          - name: Print Semgrep STDERR
+            if: always()
+            run: |
+              echo "=============================="
+              cat .ash/ash_output/scanners/semgrep/source/SemgrepScanner.stderr.log
+              
+          - name: Print Semgrep STDOUT
+            if: always()
+            run: |
+              echo "=============================="
+              cat .ash/ash_output/scanners/semgrep/source/SemgrepScanner.stdout.log
+
+          - name: Count Semgrep Findings
+            if: always()
+            run: |
+              python - <<'EOF'
+              import json
+
+              with open(".ash/ash_output/scanners/semgrep/source/results_sarif.sarif") as f:
+              sarif = json.load(f)
+
+              runs = sarif.get("runs", [])
+              findings = 0
+
+              for run in runs:
+                  findings += len(run.get("results", []))
+
+              print(f"TOTAL FINDINGS = {findings}")
+              EOF
+
       ###############################          
       - name: Upload ASH Artifacts
         if: always()

@@ -230,6 +230,15 @@ jobs:
           pip install constructs
           pip install cdk-nag==2.28.195
 
+      ####################
+      #Semgrep Installation
+      #####################
+      
+      - name: Install Semgrep
+        run: |
+          pip install semgrep
+          semgrep --version
+
       ###################          
       #Grype Installation
       ###################

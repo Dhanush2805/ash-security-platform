@@ -230,6 +230,21 @@ jobs:
           pip install constructs
           pip install cdk-nag==2.28.195
 
+      # =========================
+      # VERIFY CUSTOM ASH INSTALL
+      # =========================
+      - name: Verify Custom ASH
+        run: |
+          python -c "import automated_security_helper; print(automated_security_helper.__file__)"
+
+      # =========================
+      # VERIFY GRYPE INSTALLATION
+      # =========================
+      - name: Verify Grype
+        run: |
+          which grype || true
+          grype version || true
+
 
       - name: Verify CDK Environment
         run: |

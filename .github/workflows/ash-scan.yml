@@ -294,7 +294,13 @@ jobs:
       - name: Run ASH Scan
         run: |
           ash --mode local
-
+          
+      - name: Print Semgrep SARIF
+        if: always()
+        run: |
+          echo "==============================="
+          cat .ash/ash_output/scanners/semgrep/source/results_sarif.sarif
+          
       - name: Upload ASH Artifacts
         if: always()
         uses: actions/upload-artifact@v4

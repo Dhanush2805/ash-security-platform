@@ -241,6 +241,17 @@ jobs:
 
           semgrep --version
 
+      - name: Debug Repository
+        run: |
+          echo "===== Current Directory ====="
+          pwd
+
+          echo "===== Repository Files ====="
+          find .
+
+          echo "===== app.py ====="
+          cat app.py || true
+
       ###################          
       #Grype Installation
       ###################

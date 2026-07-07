@@ -299,12 +299,28 @@ jobs:
         run: |
           ash --mode local
           
-      - name: Print Semgrep SARIF
+      ####################################################
+      # ADD THIS DEBUG STEP HERE
+      ####################################################
+      - name: Debug ASH Output
         if: always()
         run: |
-          echo "==============================="
-          cat .ash/ash_output/scanners/semgrep/source/results_sarif.sarif
-          
+          echo "===== Current Directory ====="
+          pwd
+
+          echo ""
+          echo "===== .ash directory ====="
+          find .ash -type f || true
+
+          echo ""
+          echo "===== All SARIF files ====="
+          find . -name "*.sarif" || true
+
+          echo ""
+          echo "===== Semgrep-related files ====="
+          find . -iname "*semgrep*" || true
+
+      ###############################          
       - name: Upload ASH Artifacts
         if: always()
         uses: actions/upload-artifact@v4

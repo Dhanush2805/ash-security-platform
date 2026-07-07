@@ -338,23 +338,6 @@ jobs:
               echo "=============================="
               cat .ash/ash_output/scanners/semgrep/source/SemgrepScanner.stdout.log
 
-          - name: Count Semgrep Findings
-            if: always()
-            run: |
-              python - <<'EOF'
-              import json
-
-              with open(".ash/ash_output/scanners/semgrep/source/results_sarif.sarif") as f:
-              sarif = json.load(f)
-
-              runs = sarif.get("runs", [])
-              findings = 0
-
-              for run in runs:
-                  findings += len(run.get("results", []))
-
-              print(f"TOTAL FINDINGS = {findings}")
-              EOF
 
       ###############################          
       - name: Upload ASH Artifacts

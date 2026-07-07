@@ -338,6 +338,23 @@ jobs:
           echo "=============================="
           cat .ash/ash_output/scanners/semgrep/source/SemgrepScanner.stdout.log
 
+      - name: Locate Python Semgrep Rules
+        if: always()
+        run: |
+          echo "===== Searching for subprocess-shell-true ====="
+
+          grep -R "subprocess-shell-true" /home/runner 2>/dev/null || true
+
+          echo ""
+          echo "===== Searching for dangerous-subprocess ====="
+
+          grep -R "dangerous-subprocess" /home/runner 2>/dev/null || true
+
+          echo ""
+          echo "===== Searching for eval-detected ====="
+
+          grep -R "eval-detected" /home/runner 2>/dev/null || true
+
 
       ###############################          
       - name: Upload ASH Artifacts

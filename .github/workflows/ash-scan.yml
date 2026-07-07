@@ -326,17 +326,17 @@ jobs:
           echo "========== SEARCHING FOR SEMGREP =========="
           find /home/runner -iname "*semgrep*" 2>/dev/null || true
 
-          - name: Print Semgrep STDERR
-            if: always()
-            run: |
-              echo "=============================="
-              cat .ash/ash_output/scanners/semgrep/source/SemgrepScanner.stderr.log
+      - name: Print Semgrep STDERR
+        if: always()
+        run: |
+          echo "=============================="
+          cat .ash/ash_output/scanners/semgrep/source/SemgrepScanner.stderr.log
               
-          - name: Print Semgrep STDOUT
-            if: always()
-            run: |
-              echo "=============================="
-              cat .ash/ash_output/scanners/semgrep/source/SemgrepScanner.stdout.log
+      - name: Print Semgrep STDOUT
+        if: always()
+        run: |
+          echo "=============================="
+          cat .ash/ash_output/scanners/semgrep/source/SemgrepScanner.stdout.log
 
 
       ###############################          

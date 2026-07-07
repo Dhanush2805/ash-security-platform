@@ -230,6 +230,14 @@ jobs:
           pip install constructs
           pip install cdk-nag==2.28.195
 
+      ###################          
+      #Grype Installation
+      ###################
+      - name: Install Grype
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
+
+          grype version
       # =========================
       # VERIFY CUSTOM ASH INSTALL
       # =========================

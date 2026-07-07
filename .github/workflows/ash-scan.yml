@@ -269,6 +269,7 @@ jobs:
           node --version
           npm --version
 
+          pip show typer
           pip show automated-security-helper
           pip show aws-cdk-lib
           pip show constructs

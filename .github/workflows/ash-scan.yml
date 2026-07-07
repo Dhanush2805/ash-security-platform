@@ -253,6 +253,7 @@ jobs:
           cat app.py || true
 
       - name: Debug Rules
+        continue-on-error: true
         run: |
           semgrep show-config --config p/ci
     

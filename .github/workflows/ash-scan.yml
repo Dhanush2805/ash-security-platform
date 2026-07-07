@@ -237,6 +237,8 @@ jobs:
       - name: Install Semgrep
         run: |
           pip install semgrep
+          pip install "typer<0.20"
+
           semgrep --version
 
       ###################          

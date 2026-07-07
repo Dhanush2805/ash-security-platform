@@ -257,26 +257,6 @@ jobs:
         run: |
           semgrep show-config --config p/ci
 
-      - name: Print Semgrep Rule IDs
-        if: always()
-        run: |
-          python - <<'PY'
-          import json
-
-          f = ".ash/ash_output/scanners/semgrep/source/results_sarif.sarif"
-
-          data = json.load(open(f))
-
-          rules = data["runs"][0]["tool"]["driver"]["rules"]
-
-          print("\nPython rules executed:\n")
-
-          for r in rules:
-              rid = r["id"]
-              if rid.startswith("python."):
-                  print(rid)
-
-          PY
     
       ###################          
       #Grype Installation
@@ -375,6 +355,27 @@ jobs:
           echo "===== Searching for eval-detected ====="
 
           grep -R "eval-detected" /home/runner 2>/dev/null || true
+
+      - name: Print Semgrep Rule IDs
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+
+          f = ".ash/ash_output/scanners/semgrep/source/results_sarif.sarif"
+
+          data = json.load(open(f))
+
+          rules = data["runs"][0]["tool"]["driver"]["rules"]
+
+          print("\nPython rules executed:\n")
+
+          for r in rules:
+              rid = r["id"]
+              if rid.startswith("python."):
+                  print(rid)
+
+          PY
 
 
       ###############################          

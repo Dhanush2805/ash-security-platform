@@ -305,20 +305,25 @@ jobs:
       - name: Debug ASH Output
         if: always()
         run: |
-          echo "===== Current Directory ====="
           pwd
 
-          echo ""
-          echo "===== .ash directory ====="
-          find .ash -type f || true
+          echo "========== HOME =========="
+          echo $HOME
 
-          echo ""
-          echo "===== All SARIF files ====="
-          find . -name "*.sarif" || true
+          echo "========== WORKSPACE =========="
+          echo $GITHUB_WORKSPACE
 
-          echo ""
-          echo "===== Semgrep-related files ====="
-          find . -iname "*semgrep*" || true
+          echo "========== SEARCHING FOR ash_output =========="
+          find /home/runner -type d -name "ash_output" 2>/dev/null || true
+
+          echo "========== SEARCHING FOR .ash =========="
+          find /home/runner -type d -name ".ash" 2>/dev/null || true
+
+          echo "========== SEARCHING FOR SARIF =========="
+          find /home/runner -name "*.sarif" 2>/dev/null || true
+
+          echo "========== SEARCHING FOR SEMGREP =========="
+          find /home/runner -iname "*semgrep*" 2>/dev/null || true
 
       ###############################          
       - name: Upload ASH Artifacts
